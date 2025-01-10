@@ -30,6 +30,7 @@ class PurchaseListView(ListView):
     template_name = 'inventory/purchases.html'
     context_object_name = 'purchases'
 
+
 class ProfitRevenueView(TemplateView):
     template_name = 'inventory/profit_revenue.html'
 
@@ -42,7 +43,8 @@ class ProfitRevenueView(TemplateView):
         )
         # Calculate total cost
         total_cost = sum(
-            sum(ingredient.price * ingredient.quantity for ingredient in item.ingredients.all())
+            sum(ingredient['ingredient__unit_price'] * ingredient['quantity'] for ingredient 
+                in RecipeRequirements.objects.filter(menu_item=item).values('ingredient__unit_price', 'quantity'))
             for item in MenuItem.objects.all()
         )
         # Calculate profit
