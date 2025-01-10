@@ -1,0 +1,25 @@
+{% extends 'inventory/base.html' %}
+
+{% block title %}Purchases{% endblock %}
+
+{% block content %}
+<h1>Purchases</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Total Price</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for purchase in purchases %}
+        <tr>
+            <td>{{ purchase.item.name }}</td>
+            <td>${{ purchase.total_price }}</td>
+            <td>{{ purchase.date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
