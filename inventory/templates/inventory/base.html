@@ -3,23 +3,36 @@
 <head>
     <title>{% block title %}Restaurant Inventory{% endblock %}</title>
     {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'index' %}">Inventory</a></li>
-            <li><a href="{% url 'menu' %}">Menu</a></li>
-            <li><a href="{% url 'purchases' %}">Purchases</a></li>
-            <li><a href="{% url 'profit_revenue' %}">Profit & Revenue</a></li>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'home' %}">Restaurant Inventory</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Inventory</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'menu' %}">Menu</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'purchases' %}">Purchases</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'profit_revenue' %}">Profit & Revenue</a></li>
+            </ul>
+        </div>
     </nav>
-    <div class="content">
+    <div class="container mt-4">
         {% block content %}{% endblock %}
     </div>
-    <footer>
-        <p>&copy; 2025 Simple restaurant Inventory</p>
+    <footer class="footer bg-dark text-white text-center py-3">
+        <p>&copy; 2024 Restaurant Inventory System</p>
     </footer>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

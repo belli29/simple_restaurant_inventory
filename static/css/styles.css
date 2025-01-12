@@ -6,12 +6,19 @@
 }
 
 /* Body Styling */
-body {
+html, body {
+    height: 100%;
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #f4f4f4;
     color: #333;
-    padding: 20px;
+}
+
+/* Flexbox Layout */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* Navigation Bar */
@@ -43,7 +50,8 @@ nav ul li a:hover {
 }
 
 /* Content Styling */
-.content {
+.container {
+    flex: 1;
     max-width: 800px;
     margin: 0 auto;
     background: #fff;
@@ -117,10 +125,12 @@ a:hover {
 }
 
 /* Footer */
-footer {
+.footer {
     text-align: center;
-    margin-top: 20px;
     padding: 10px 0;
     background-color: #333;
     color: #fff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
