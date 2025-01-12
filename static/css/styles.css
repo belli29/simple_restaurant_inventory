@@ -124,13 +124,30 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Form Styling */
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #ccc;
+}
+
+/* Button Styling */
+.btn-custom {
+    background-color: #333; /* Colore di sfondo personalizzato */
+    color: #fff; /* Colore del testo */
+    border: none; /* Rimuove il bordo */
+}
+
+.btn-custom:hover {
+    background-color: #555; /* Colore di sfondo al passaggio del mouse */
+    color: #fff; /* Colore del testo al passaggio del mouse */
+}
+
 /* Footer */
 .footer {
     text-align: center;
     padding: 10px 0;
     background-color: #333;
     color: #fff;
-    position: relative;
-    bottom: 0;
     width: 100%;
 }

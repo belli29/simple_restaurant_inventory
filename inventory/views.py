@@ -1,8 +1,9 @@
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView, TemplateView
+from django.views.generic import ListView, DeleteView, TemplateView, CreateView
 from django.db.models import Sum, F
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirements
+from .forms import IngredientForm
 
 class HomeView(TemplateView):
     template_name = 'inventory/home.html'
@@ -53,4 +54,10 @@ class ProfitRevenueView(TemplateView):
         context['total_cost'] = total_cost
         context['profit'] = profit
         return context
+
+class IngredientCreateView(CreateView):
+    model = Ingredient
+    form_class = IngredientForm
+    template_name = 'inventory/add_ingredient.html'
+    success_url = reverse_lazy('index')
 
