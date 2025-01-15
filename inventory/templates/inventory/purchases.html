@@ -4,10 +4,10 @@
 
 {% block content %}
 <h1>Purchases</h1>
-<table>
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Item</th>
+            <th>Items</th>
             <th>Total Price</th>
             <th>Date</th>
         </tr>
@@ -15,9 +15,15 @@
     <tbody>
         {% for purchase in purchases %}
         <tr>
-            <td>{{ purchase.item.name }}</td>
+            <td>
+                <ul>
+                    {% for item in purchase.purchase_items.all %}
+                        <li>{{ item.menu_item.title }} ({{ item.quantity }})</li>
+                    {% endfor %}
+                </ul>
+            </td>
             <td>${{ purchase.total_price }}</td>
-            <td>{{ purchase.date }}</td>
+            <td>{{ purchase.timestamp }}</td>
         </tr>
         {% endfor %}
     </tbody>

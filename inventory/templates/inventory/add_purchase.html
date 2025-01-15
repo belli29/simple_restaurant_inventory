@@ -1,0 +1,41 @@
+{% extends 'inventory/base.html' %}
+
+{% block title %}Add Purchase{% endblock %}
+
+{% block content %}
+<h1>Add Purchase</h1>
+<form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-group">
+        {{ purchase_items.management_form }}
+        {% for form in purchase_items %}
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        {{ form.menu_item.label_tag }}
+                        {{ form.menu_item }}
+                        {% if form.menu_item.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.menu_item.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        {{ form.quantity.label_tag }}
+                        {{ form.quantity }}
+                        {% if form.quantity.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.quantity.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-custom">Add Purchase</button>
+</form>
+{% endblock %}
