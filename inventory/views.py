@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, CreateView
 from django.db.models import Sum, F
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirements, PurchaseItem
-from .forms import IngredientForm, PurchaseForm, PurchaseItemForm, MenuItemForm
+from .forms import IngredientForm, PurchaseForm, PurchaseItemForm, MenuItemForm, RecipeRequirementsForm
 from django.forms import inlineformset_factory
 
 class HomeView(TemplateView):
@@ -26,6 +26,13 @@ class MenuItemListView(ListView):
     template_name = 'inventory/menu.html'
     context_object_name = 'menu_items'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        menu_items = context['menu_items']
+        for item in menu_items:
+            item.ingredients = RecipeRequirements.objects.filter(menu_item=item)
+        return context
+
 
 class PurchaseListView(ListView):
     model = Purchase
@@ -46,19 +53,32 @@ class ProfitRevenueView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
         # Calculate total revenue
         total_revenue = (
-            Purchase.objects.annotate(total_price=Sum(F('items__price')))
+            Purchase.objects.annotate(total_price=Sum(F('purchase_items__menu_item__price') * F('purchase_items__quantity')))
             .aggregate(total_revenue=Sum('total_price'))['total_revenue']
         )
+        
         # Calculate total cost
-        total_cost = sum(
-            sum(ingredient['ingredient__unit_price'] * ingredient['quantity'] for ingredient 
-                in RecipeRequirements.objects.filter(menu_item=item).values('ingredient__unit_price', 'quantity'))
-            for item in MenuItem.objects.all()
-        )
-        # Calculate profit
+        total_cost = 0
+        menu_items = MenuItem.objects.all()
+        
+        for item in menu_items:
+            item_cost = 0
+            ingredients = RecipeRequirements.objects.filter(menu_item=item).values('ingredient__unit_price', 'quantity')
+            
+            for ingredient in ingredients:
+                ingredient_cost = ingredient['ingredient__unit_price'] * ingredient['quantity']
+                item_cost += ingredient_cost
+            
+            total_cost += item_cost
+
         profit = total_revenue - total_cost
+        total_revenue = round(total_revenue, 2)
+        total_cost = round(total_cost, 2)
+        profit = round(profit, 2)
+
         context['total_revenue'] = total_revenue
         context['total_cost'] = total_cost
         context['profit'] = profit
@@ -69,6 +89,12 @@ class IngredientCreateView(CreateView):
     form_class = IngredientForm
     template_name = 'inventory/add_ingredient.html'
     success_url = reverse_lazy('index')
+
+class RecipeRequirementsCreateView(CreateView):
+    model = RecipeRequirements
+    form_class = RecipeRequirementsForm
+    template_name = 'inventory/add_recipe_requirement.html'
+    success_url = reverse_lazy('menu')
 
 class PurchaseCreateView(CreateView):
     model = Purchase

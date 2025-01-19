@@ -1,0 +1,16 @@
+{% extends 'inventory/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Recipe Requirement{% endblock %}
+
+{% block content %}
+<h1>Add Recipe Requirement</h1>
+<div class="alert alert-warning">
+    Note: If the recipe requirement already exists, it will be overwritten.
+</div>
+<form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-custom" id="submit-btn">Add Recipe Requirement</button>
+</form>
+{% endblock %}
